@@ -19,11 +19,29 @@ jobs:
     # Steps in the workflow
     
     steps:
-      - name: Track Changes
-        id: track-changes
-        uses:  AceFire6/file_changes@v0.1.0
+      # Get all changed files first
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31
+        
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+          
+      # Getting all rst files
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v31
         with:
-          change-map: |
-            rst: {"globs": "*.rst", "separateDeleted": true}
-      - name: Commit Files
-        run: echo "Changes: ${{ steps.track-changes.rst}}"
+          files: |
+            *.rst
+            
+      #Testing the rst file retrieval      
+      - name: Run step if any of the listed files above change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
