@@ -16,15 +16,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install mustache (to update the date in build.sh)
         run:  apk add ruby && gem install mustache
-      - name: Clone supercharge docs repository
-        uses: GuillaumeFalourd/clone-github-repo-action@v2
-        with:
-          owner: 'gauravsachdev'
-          repository: 'geoedf'
+      - name: Clone Repo
+        run: git clone https://github.com/gauravsachdev/geoedf.git
       - name: pulling the repo
         run: |
           ls -al 
-          git pull https://github.com/gauravsachdev/geoedf.git
           find . -type f -name "*.rst"  > files.txt
           while read p; do
               cp "$p" ./geoedf/docs/
