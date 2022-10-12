@@ -20,9 +20,10 @@ jobs:
         run: | 
           OUTPUT_DIR="output_temp"
           mkdir "$OUTPUT_DIR"
-          dir /s /b /o:gn *.rst > "$OUTPUT_DIR"/.files.txt
+          find . -type f -name "*.rst"  > "$OUTPUT_DIR"/.files.txt
           while read p; do
               cp "$p" "$OUTPUT_DIR"
+              echo "$p"
           done <"$OUTPUT_DIR"/.files.txt
       - name: filters output_temp/ to output/ using rsync (to exclude main.epub in this example)
         run:  apk add rsync && rsync -arv --exclude="/.files" output_temp/ output/
