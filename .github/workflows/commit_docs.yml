@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install mustache (to update the date in build.sh)
-        run:  apk add ruby && gem install mustache
       - name: Clone Repo
         run: sh build.sh
       - name: pulling the repo
