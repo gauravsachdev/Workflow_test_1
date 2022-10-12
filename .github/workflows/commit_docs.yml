@@ -8,57 +8,29 @@ name: commit_docs
 on:
   push
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "commit_documentation"
-  commit_documentation:
-    # The type of runner that the job will run on
+  build:
     runs-on: ubuntu-latest
-
-    # Steps in the workflow
-    
+    container: pandoc/latex
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-#          submodules: true # OR "recursive" -> To include all changed submodule files.
-      # Get all changed files first
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v31
-        
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-          
-      # Getting all rst files
-      - name: Get specific changed files
-        id: changed-files-specific
-        uses: tj-actions/changed-files@v31
-        with:
-          files: |
-            **.rst   
-      #Testing the rst file retrieval      
-      - name: Run step if any of the listed files above change
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: |
-          git pull https://github.com/gauravsachdev/geoedf
-          cd geoedf/docs
-          
-          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-          
-      - name: Pushes test file
-        uses: dmnemec/copy_file_to_another_repo_action@main
+      - uses: actions/checkout@v2
+      - name: Install mustache (to update the date in build.sh)
+        run:  apk add ruby && gem install mustache
+      - name: creates the wanted files in output_temp/ - example script
+        run:  sh ./build.sh
+      - name: filters output_temp/ to output/ using rsync (to exclude main.epub in this example)
+        run:  apk add rsync && rsync -arv --exclude="/.files" output_temp/ output/
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
         env:
-         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'test2.md'
-          destination_repo: 'gauravsachdev/geoedf'
-          destination_folder: 'docs'
-          user_email: 'your_email@example.com'
-          user_name: 'example'
-          commit_message: 'A custom message for the commit'
+          source-directory: output/
+          destination-github-username: 'gauravsachdev'
+          destination-repository-name: 'geoedf'
+          user-email: 'gaurav1565@gmail.com'
+          commit-message: See ORIGIN_COMMIT from $GITHUB_REF
+          target-branch: main
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
