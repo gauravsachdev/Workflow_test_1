@@ -18,11 +18,14 @@ jobs:
       - name: pulling the repo
         run: |
           ls -al 
+          pwd
           find . -type f -name "*.rst"  > files.txt
+          ls -al 
+          pwd
           while read p; do
               cp "$p" ./geoedf/docs/
               echo "$p"
-          done <"$OUTPUT_DIR"/.files.txt
+          done <files.txt
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
