@@ -23,7 +23,7 @@ jobs:
           ls -al 
           pwd
           while read p; do
-              cp "$p" ./geoedf/docs/
+              cp -u "$p" ./geoedf/docs/
               echo "$p"
           done <files.txt
       - name: Pushes to another repository
