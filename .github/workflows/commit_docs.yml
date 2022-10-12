@@ -35,9 +35,9 @@ jobs:
         with:
           source-directory: output/
           destination-github-username: 'gauravsachdev'
-          destination-repository-name: 'geoedf@master'
+          destination-repository-name: 'geoedf'
           user-email: 'gaurav1565@gmail.com'
           commit-message: See ORIGIN_COMMIT from $GITHUB_REF
-          target-branch: main
+          target-branch: master
       - name: Test get variable exported by push-to-another-repository
         run: echo $DESTINATION_CLONED_DIRECTORY
