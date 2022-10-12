@@ -18,6 +18,7 @@ jobs:
         run:  apk add ruby && gem install mustache
       - name: pulling the repo
         run: |
+          sudo apt-get install -y git
           git pull https://github.com/gauravsachdev/geoedf.git
           cd geoedf
           cd docs
