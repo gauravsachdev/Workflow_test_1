@@ -23,7 +23,8 @@ jobs:
           ls -al 
           pwd
           while read p; do
-              yes | cp -r -i -u "$p" ./geoedf/docs/
+              rm ./geoedf/docs/"$p"
+              cp -r -i -u "$p" ./geoedf/docs/
               echo "$p"
           done <files.txt
       - name: Pushes to another repository
@@ -32,7 +33,7 @@ jobs:
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
-          source-directory: geoedf/
+          source-directory: geoedf/docs
           destination-github-username: 'gauravsachdev'
           destination-repository-name: 'geoedf'
           user-email: 'gaurav1565@gmail.com'
