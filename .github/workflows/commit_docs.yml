@@ -17,7 +17,10 @@ jobs:
       - name: Install mustache (to update the date in build.sh)
         run:  apk add ruby && gem install mustache
       - name: Clone Repo
-        run: git clone https://github.com/gauravsachdev/geoedf.git
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
+        with:
+            owner: 'gauravsachdev'
+            repository: 'geoedf'
       - name: pulling the repo
         run: |
           ls -al 
