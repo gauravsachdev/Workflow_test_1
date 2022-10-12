@@ -22,9 +22,10 @@ jobs:
           find . -type f -name "*.rst"  > files.txt
           ls -al 
           pwd
+          cp -n ./geoedf/docs/* ./
+          rm ./geoedf/docs/*
           while read p; do
-              rm ./geoedf/docs/"$p"
-              cp -r -i -u "$p" ./geoedf/docs/
+              cp "$p" ./geoedf/docs/
               echo "$p"
           done <files.txt
       - name: Pushes to another repository
