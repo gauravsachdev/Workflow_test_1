@@ -17,12 +17,12 @@ jobs:
         run: |
           ls -al 
           pwd
-          find . -type f -name "*.rst"  > files.txt
           ls -al 
           pwd
           git clone https://github.com/gauravsachdev/geoedf.git
           cp -n ./geoedf/docs/* ./
           rm ./geoedf/docs/*
+          find . -type f -name "*.rst"  > files.txt
           while read p; do
               cp "$p" ./geoedf/docs/
               echo "$p"
@@ -33,7 +33,7 @@ jobs:
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
-          source-directory: geoedf/docs
+          source-directory: geoedf
           destination-github-username: 'gauravsachdev'
           destination-repository-name: 'geoedf'
           user-email: 'gaurav1565@gmail.com'
