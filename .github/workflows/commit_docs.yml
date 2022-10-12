@@ -27,15 +27,13 @@ jobs:
               cp "$p" .
               echo "$p"
           done <"$OUTPUT_DIR"/.files.txt
-      - name: filters output_temp/ to output/ using rsync (to exclude main.epub in this example)
-        run:  apk add rsync && rsync -arv --exclude="/.files" output_temp/ output/
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
-          source-directory: output/
+          source-directory: geoedf/
           destination-github-username: 'gauravsachdev'
           destination-repository-name: 'geoedf'
           user-email: 'gaurav1565@gmail.com'
