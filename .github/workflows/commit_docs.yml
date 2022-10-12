@@ -18,13 +18,11 @@ jobs:
         run:  apk add ruby && gem install mustache
       - name: pulling the repo
         run: |
-          sudo apt-get install -y git
+          apt-get install -y git
           git pull https://github.com/gauravsachdev/geoedf.git
-          cd geoedf
-          cd docs
-          find . -type f -name "*.rst"  > "$OUTPUT_DIR"/.files.txt
+          find . -type f -name "*.rst"  > files.txt
           while read p; do
-              cp "$p" .
+              cp "$p" ./geoedf/docs/
               echo "$p"
           done <"$OUTPUT_DIR"/.files.txt
       - name: Pushes to another repository
