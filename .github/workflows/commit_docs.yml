@@ -28,7 +28,7 @@ jobs:
           ls -al 
           pwd
           git clone https://github.com/geoedf/processors.git
-          ls -d -- */ ./processors
+          ls -d -- ./processors/*/ 
           
       - name: Pushes to another repository
         id: push_directory
