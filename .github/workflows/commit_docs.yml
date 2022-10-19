@@ -28,8 +28,11 @@ jobs:
           ls -al 
           pwd
           git clone https://github.com/geoedf/processors.git
-          ls -d -- ./processors/*/ 
-          
+          cd ./processors/
+          ls -d */ | sed 's#/##' > processors_list.txt
+          cp ./processors_list.txt ./../geoedf
+          cd ../
+          ls -al ./geoedf
       - name: Pushes to another repository
         id: push_directory
         uses: cpina/github-action-push-to-another-repository@main
